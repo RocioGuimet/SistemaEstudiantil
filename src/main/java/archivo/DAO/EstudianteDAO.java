@@ -41,12 +41,50 @@ public class EstudianteDAO {
         }
         return estudiantes;
     }
+    // Metodo para buscar estudiantes
+    public boolean findById(Estudiante estudiante){
+        PreparedStatement ps;
+        ResultSet rs;
+        Connection con = getConexion();
+        String sql = "SELECT * FROM estudiante WHERE id_estudiante = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, estudiante.getIdEstudiante());
+            rs = ps.executeQuery();
+            if(rs.next()){
+                estudiante.setNombre(rs.getString("nombre"));
+                estudiante.setApellido(rs.getString("apellido"));
+                estudiante.setTelefono(rs.getInt("telefono"));
+                estudiante.setEmail(rs.getString("email"));
+                return true;
+            }
+        } catch (Exception e){
+            System.out.println("Ocurrió un error al buscar estudiante: " + e.getMessage());
+        }
+        finally {
+            try {
+                con.close();
+            } catch (Exception e){
+                System.out.println("Ocurrió un error al cerrar conexión: " + e.getMessage());
+            }
+        }
+        return false;
+    }
 
     static void main(String[] args) {
         var estudianteDao = new EstudianteDAO();
         // Listar estudiantes
-        System.out.println("Listado de Estudiantes: ");
+        //System.out.println("Listado de Estudiantes: ");
         List<Estudiante> estudiantes = estudianteDao.listarEstudiantes();
-        estudiantes.forEach(System.out::println);
+        //estudiantes.forEach(System.out::println);
+
+        // Buscar estudiantes
+        var estudiante1 = new Estudiante(1);
+        System.out.println("Estudiante antes de la búsqueda: " + estudiante1);
+        var encontrado = estudianteDao.findById(estudiante1);
+        if(encontrado)
+            System.out.println("Estudiante encontrado: " + estudiante1);
+        else
+            System.out.println("No se encontró estudiante: " + estudiante1.getIdEstudiante());
     }
 }
