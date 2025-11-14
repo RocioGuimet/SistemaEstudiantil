@@ -42,7 +42,7 @@ public class EstudianteDAO {
         return estudiantes;
     }
 
-    public boolean findById(Estudiante estudiante){
+    public boolean buscarEstudiante(Estudiante estudiante){
         PreparedStatement ps;
         ResultSet rs;
         Connection con = getConexion();
@@ -180,7 +180,7 @@ public class EstudianteDAO {
         // Buscar estudiantes
 //        var estudiante1 = new Estudiante(1);
 //        System.out.println("Estudiante antes de la búsqueda: " + estudiante1);
-//        var encontrado = estudianteDao.findById(estudiante1);
+//        var encontrado = estudianteDao.buscarEstudiante(estudiante1);
 //        if(encontrado)
 //            System.out.println("Estudiante encontrado: " + estudiante1);
 //        else
